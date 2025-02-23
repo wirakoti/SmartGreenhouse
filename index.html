@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>GREENHOUSE AUTOMATION SYSTEM</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+   
+</head>
+
+<body>
+<div id="message"></div> 
+    <div class="container">
+        <h1>GREENHOUSE AUTOMATION SYSTEM</h1>
+
+        <!-- Measurements Section -->
+        <div class="section">
+
+            <h2> SOIL </h2>
+            <div class="spacer"></div>
+            <div class="grid">
+                <!-- Soil Moisture -->
+                <div class="card">
+                    <h3>MOISTURE <br> 1</h3>
+                    <span id="soil_moisture_1">Loading...</span>
+                    <div class="spacer"></div>
+
+                    <button class="more-button" data-measurement="soil_moisture_1">More</button>
+                    <ul class="history" id="history_soil_moisture_1">
+<button class="close-button" onclick="closeHistory('history_soil_moisture_1')">X</button> </ul>
+
+                </div>
+                <div class="card">
+                    <h3>MOISTURE <br> 2</h3>
+                    <span id="soil_moisture_2">Loading...</span>
+                    <div class="spacer"></div>
+
+                    <button class="more-button" data-measurement="soil_moisture_2">More</button>
+                    <ul class="history" id="history_soil_moisture_2"> <button class="close-button" onclick="closeHistory('history_soil_moisture_2')">X</button>
+</ul>
+
+                </div>
+
+                <!-- Soil Temperature -->
+                <div class="card">
+                    <h3>TEMPERATURE 1</h3>
+                    <span id="soil_temperature_1">Loading...</span>
+                    <div class="spacer"></div>
+                    <button class="more-button" data-measurement="soil_temperature_1">More</button>
+                    <ul class="history" id="history_soil_temperature_1"> <button class="close-button" onclick="closeHistory('history_soil_temperature_1')">X</button>
+</ul>
+
+                </div>
+                <div class="card">
+                    <h3>TEMPERATURE 2</h3>
+                    <span id="soil_temperature_2">Loading...</span>
+                    <div class="spacer"></div>
+                    <button class="more-button" data-measurement="soil_temperature_2">More</button>
+                    <ul class="history" id="history_soil_temperature_2">
+<button class="close-button" onclick="closeHistory('history_soil_temperature_2')">X</button>
+</ul>
+
+                </div>
+                <h2>AIR</h2>
+                <div class="spacer"></div>
+
+                <!-- Air Humidity -->
+                <div class="card">
+                    <h3>HUMIDITY <br> 1</h3>
+                    <span id="air_humidity_1">Loading...</span>
+                    <div class="spacer"></div>
+
+                    <button class="more-button" data-measurement="air_humidity_1">More</button>
+                    <ul class="history" id="history_air_humidity_1">
+<button class="close-button" onclick="closeHistory('history_air_humidity_1')">X</button>
+</ul>
+
+                </div>
+                <div class="card">
+                    <h3>HUMIDITY <br> 2</h3>
+                    <span id="air_humidity_2">Loading...</span>
+                    <div class="spacer"></div>
+
+                    <button class="more-button" data-measurement="air_humidity_2">More</button>
+                    <ul class="history" id="history_air_humidity_2">
+<button class="close-button" onclick="closeHistory('history_air_humidity_2')">X</button>
+
+</ul>
+
+                </div>
+
+                <!-- Air Temperature -->
+                <div class="card">
+                    <h3>TEMPERATURE <br> 1</h3>
+                    <span id="air_temperature_1">Loading...</span>
+                    <div class="spacer"></div>
+
+                    <button class="more-button" data-measurement="air_temperature_1">More</button>
+                    <ul class="history" id="history_air_temperature_1">
+<button class="close-button" onclick="closeHistory('history_air_temperature_1')">X</button>
+
+</ul>
+
+                </div>
+                <div class="card">
+                    <h3>TEMPERATURE 2</h3>
+                    <span id="air_temperature_2">Loading...</span>
+                    <div class="spacer"></div>
+
+                    <button class="more-button" data-measurement="air_temperature_2">More</button>
+                    <ul class="history" id="history_air_temperature_2">
+<button class="close-button" onclick="closeHistory('history_air_temperature_2')">X</button>
+
+</ul>
+
+                </div>
+            </div>
+            <p>Last Updated: <span id="last_updated">Loading...</span></p>
+        </div>
+
+       
+
+        <!-- Mode Section -->
+<div class="section mode">
+    <h2>DATA CHARTS</h2>
+ <!-- Graphs Buttons -->
+ <div id="graph-buttons">
+    <button id="show-soil-moisture">Soil Moisture</button>
+    <button id="show-soil-temperature">Soil Temperature</button>
+    <button id="show-air-humidity">Air Humidity</button>
+    <button id="show-air-temperature">Air Temperature</button>
+</div>
+
+<!-- Graphs Modal -->
+<div id="graphs-modal" style="display: none;">
+    <button id="close-graphs">X</button>
+    <div id="graphs-container">
+        <!-- Canvas elements for the graphs -->
+        <canvas id="soil-moisture-graph"></canvas>
+        <canvas id="soil-temperature-graph"></canvas>
+        <canvas id="air-humidity-graph"></canvas>
+        <canvas id="air-temperature-graph"></canvas>
+    </div>
+</div>
+    <h2>MODE</h2>
+
+    <!-- Toggle Buttons Section -->
+    <div class="toggle-buttons">
+        <button id="autoMode" class="active">AUTO</button>
+        <button id="handMode">MANUAL</button>
+    </div>
+   
+<h2> AUTO <br> </h2>
+    <!-- Sliders Section -->
+    <div class="sliders">
+        <h3>Adjust the settings used in auto-mode.</h3> 
+        <div class="slider">
+            <label for="temperatureSlider">Temperature:</label>
+            <span id="temperatureMin">16&deg;C</span>
+            <input type="range" id="temperatureSlider" min="16" max="26" step="2" value="20" list="temperatureTicks">
+            <datalist id="temperatureTicks">
+                <option value="16" label="16&deg;C"></option>
+                <option value="18" label="18&deg;C"></option>
+                <option value="20" label="20&deg;C"></option>
+                <option value="22" label="22&deg;C"></option>
+                <option value="24" label="24&deg;C"></option>
+                <option value="26" label="26&deg;C"></option>
+            </datalist>
+            <span id="temperatureValue">20&deg;C</span>
+            <span id="temperatureMax">26&deg;C</span>
+        </div>
+        <div class="slider">
+            <label for="humiditySlider">Humidity:</label>
+            <span id="humidityMin">40%</span>
+            <input type="range" id="humiditySlider" min="40" max="80" step="20" value="60" list="humidityTicks">
+            <datalist id="humidityTicks">
+                <option value="40" label="40%"></option>
+                <option value="60" label="60%"></option>
+                <option value="80" label="80%"></option>
+            </datalist>
+            <span id="humidityValue">60%</span>
+            <span id="humidityMax">80%</span>
+        </div>
+        <div class="slider">
+            <label for="moistureSlider">Soil Moisture:</label>
+            <span id="moistureMin">20%</span>
+            <input type="range" id="moistureSlider" min="20" max="60" step="20" value="40" list="moistureTicks">
+            <datalist id="moistureTicks">
+                <option value="20" label="20%"></option>
+                <option value="40" label="40%"></option>
+                <option value="60" label="60%"></option>
+            </datalist>
+            <span id="moistureValue">40%</span>
+            <span id="moistureMax">60%</span>
+        </div>
+    </div>
+</div>
+ <!-- Control Switches Section -->
+ <div class="section - control">
+    <h2>MANUAL</h2>
+        <div class="control-card" id="fan1Switch" data-pin="3">FAN 1</div>
+        <div class="control-card" id="heaterSwitch" data-pin="1">HEATER</div>
+        <div class="control-card" id="fan2Switch" data-pin="4">FAN 2</div>
+        <div class="control-card" id="humidifier" data-pin="6">HUMIDIFIER</div>
+        <div class="control-card" id="fan3Switch" data-pin="2">FAN 3</div>
+        <div class="control-card" id="pumpSwitch" data-pin="5">WATER PUMP</div>
+    
+</div>
+    </div>
+
+    <footer class="footer">
+        &copy; 2025 Greenhouse Automation System
+    </footer>
+
+    <script>
+        let isAutoMode = true; 
+
+        document.getElementById('autoMode').addEventListener('click', function () {
+            isAutoMode = true;
+            this.classList.add('active');
+            document.getElementById('handMode').classList.remove('active');
+        });
+
+        document.getElementById('handMode').addEventListener('click', function () {
+            isAutoMode = false;
+            this.classList.add('active');
+            document.getElementById('autoMode').classList.remove('active');
+        });
+function closeHistory(historyId) {
+    const historyElement = document.getElementById(historyId);
+    if (historyElement) {
+        historyElement.style.display = 'none'; 
+    }
+}
+function showMessage(message) {
+    const messageElement = document.getElementById('message');
+    messageElement.textContent = message;  
+    messageElement.style.display = 'block';  
+    setTimeout(function() {
+        messageElement.style.display = 'none';  
+    }, 3000);  
+}
+       
+        function handleSliderInput(event) {
+            if (!isAutoMode) {
+                alert("You're in manual-mode. Switch to auto-mode to adjust the settings.");
+                event.target.value = event.target.defaultValue;
+            } else {
+                const setTemp = parseFloat(event.target.value); 
+                if (isNaN(setTemp)) {
+                    console.error("Invalid temperature value:", event.target.value);
+                    return;  
+                }
+
+                const valueElement = document.getElementById(event.target.dataset.valueElementId);
+                valueElement.textContent = `${setTemp}${event.target.dataset.unit}`;
+                console.log("Slider value as float:", setTemp);
+            }
+        }
+
+        const temperatureSlider = document.getElementById('temperatureSlider');
+        temperatureSlider.dataset.valueElementId = 'temperatureValue';
+        temperatureSlider.dataset.unit = 'C';
+        temperatureSlider.addEventListener('input', handleSliderInput);
+
+        const moistureSlider = document.getElementById('moistureSlider');
+        moistureSlider.dataset.valueElementId = 'moistureValue';
+        moistureSlider.dataset.unit = '%';
+        moistureSlider.addEventListener('input', handleSliderInput);
+
+        const humiditySlider = document.getElementById('humiditySlider');
+        humiditySlider.dataset.valueElementId = 'humidityValue';
+        humiditySlider.dataset.unit = '%';
+        humiditySlider.addEventListener('input', handleSliderInput);
+
+        document.querySelectorAll('.control-card').forEach(switchElement => {
+            switchElement.addEventListener('click', function () {
+                if (isAutoMode) {
+                    alert("You're in auto-mode. Switch to manual-mode to be able to turn on/off the devices manually.");
+                    return;
+                }
+
+                const pin = this.getAttribute('data-pin'); 
+                const isActive = this.classList.contains('active');
+                this.classList.toggle('active');
+
+     
+                fetch(`/control_pin/${pin}`, {  
+                    method: 'GET',
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        showMessage(data.message); 
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            });
+        });
+
+        function fetchHistory(measurementType, historyElement) {
+            fetch(`/history/${measurementType}`)
+                .then(response => response.json())
+                .then(data => {
+                    historyElement.innerHTML = '';
+
+                    data.forEach(entry => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = `${entry.timestamp}: ${entry.value}`;
+                        historyElement.appendChild(listItem);
+                    });
+
+                    historyElement.style.display = 'block';
+                })
+                .catch(error => {
+                    console.error('Error fetching history:', error);
+                });
+        }
+
+        document.querySelectorAll('.more-button').forEach(button => {
+    button.addEventListener('click', function () {
+        const measurementType = this.dataset.measurement;
+        const historyElement = document.getElementById(`history_${measurementType}`);
+
+        if (historyElement.style.display === 'block' || historyElement.style.display === '') {
+            historyElement.style.display = 'none';
+        } else {
+            historyElement.style.display = 'block'; 
+            fetchHistory(measurementType, historyElement); 
+        }
+    });
+});
+        function updateMeasurements() {
+            fetch('/measurements')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('soil_moisture_1').textContent = data.soil_moisture_1 + '%';
+                    document.getElementById('soil_moisture_2').textContent = data.soil_moisture_2 + '%';
+                    document.getElementById('soil_temperature_1').textContent = data.soil_temperature_1 + '\u00B0C';
+                    document.getElementById('soil_temperature_2').textContent = data.soil_temperature_2 + '\u00B0C';
+                    document.getElementById('air_humidity_1').textContent = data.air_humidity_1 + '%';
+                    document.getElementById('air_humidity_2').textContent = data.air_humidity_2 + '%';
+                    document.getElementById('air_temperature_1').textContent = data.air_temperature_1 + '\u00B0C';
+                    document.getElementById('air_temperature_2').textContent = data.air_temperature_2 + '\u00B0C';
+                    document.getElementById('last_updated').textContent = data.last_updated;
+                })
+                .catch(error => console.error('Error fetching measurements:', error));
+        }
+
+        function performFiveMinuteCheck() {
+            if (isAutoMode) {
+                const setTemp = document.getElementById('temperatureSlider').value;
+                const setHumi = document.getElementById('humiditySlider').value;
+                const setMoist = document.getElementById('moistureSlider').value; 
+
+                console.log("Temperature slider value:", setTemp);
+                console.log("Performing the 5-minute check in auto-mode...");
+                fetch('/check_temperature', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+        setTemp: setTemp,
+        setHumi: setHumi,
+        setMoist: setMoist,
+    }),
+})                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Server response:', data.message);
+                    })
+                    .catch(error => {
+                        console.error('Error during the request:', error);
+                    });
+            } else {
+                console.log("Skipped 5-minute check: Not in auto-mode.");
+            }
+        }
+        setInterval(updateMeasurements, 30000);
+        setInterval(performFiveMinuteCheck, 300000);
+    </script>
+   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // Fetch graph data and render it
+    fetch('/get_graph_data')
+        .then(response => response.json())
+        .then(data => {
+            const timestamps = data.timestamps.map(timestamp => {
+                const date = new Date(timestamp);
+                return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            });
+
+            const soilMoistureData = {
+                labels: timestamps,
+                datasets: [{
+                    label: 'Average Soil Moisture',
+                    data: data.avg_soil_moisture,
+                    borderColor: 'rgb(243, 107, 127)',
+                    fill: false
+                }]
+            };
+
+            const soilTemperatureData = {
+                labels: timestamps,
+                datasets: [{
+                    label: 'Average Soil Temperature',
+                    data: data.avg_soil_temperature,
+                    borderColor: 'rgb(243, 107, 127)',
+                    fill: false
+                }]
+            };
+
+            const airHumidityData = {
+                labels: timestamps,
+                datasets: [{
+                    label: 'Average Air Humidity',
+                    data: data.avg_air_humidity,
+                    borderColor: 'rgb(243, 107, 127)',
+                    fill: false
+                }]
+            };
+
+            const airTemperatureData = {
+                labels: timestamps,
+                datasets: [{
+                    label: 'Average Air Temperature',
+                    data: data.avg_air_temperature,
+                    borderColor: 'rgb(243, 107, 127)',
+                    fill: false
+                }]
+            };
+
+            // Initialize charts (but hide them initially)
+            const soilMoistureChart = new Chart(document.getElementById('soil-moisture-graph'), {
+    type: 'line',
+    data: soilMoistureData,
+    options: {
+        plugins: {
+            title: {
+                display: true,
+                text: 'Soil Moisture',  // Title text
+                font: {
+                    size: 32,  // Adjust the font size
+                    weight: 'bold',  
+                    color: 'rgb(51, 90, 58)'
+                },
+                padding: {
+                    top: 20,
+                    bottom: 20
+                }
+            }
+        },
+        legend: {
+                display: false  // Explicitly hide the legend
+            },
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: 'Time',  // X-axis title
+                    font: {
+                        size: 16,  // Adjust font size for x-axis title
+                        color: 'rgb(51, 90, 58)'
+                    }
+                }
+            },
+            y: {
+                min: 0,
+                max: 100,
+                title: {
+                    display: true,
+                    text: 'Moisture (%)',  // Y-axis title
+                    font: {
+                        size: 16,  // Adjust font size for y-axis title
+                        color: 'rgb(51, 90, 58)'
+                    }
+                }
+            }
+        }
+    }
+});
+
+const soilTemperatureChart = new Chart(document.getElementById('soil-temperature-graph'), {
+    type: 'line',
+    data: soilTemperatureData,
+    options: {
+        plugins: {
+            title: {
+                display: true,
+                text: 'Soil Temperature',  // Title text
+                font: {
+                    size: 32,  // Adjust the font size
+                    weight: 'bold',
+                    color: 'rgb(51, 90, 58)'
+                },
+                padding: {
+                    top: 20,
+                    bottom: 20
+                }
+            }
+        },
+        label: {
+            display: false  // Hide the legend
+        },
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: 'Time',  // X-axis title
+                    font: {
+                        size: 16,
+                        color: 'rgb(51, 90, 58)'
+                    }
+                }
+            },
+            y: {
+                min: 5,
+                max: 35,
+                title: {
+                    display: true,
+                    text: 'Temperature [\u00B0C]',  // Y-axis title with degree symbol
+                    font: {
+                        size: 16,
+                        color: 'rgb(51, 90, 58)'
+                    }
+                }
+            }
+        }
+    }
+});
+
+const airHumidityChart = new Chart(document.getElementById('air-humidity-graph'), {
+    type: 'line',
+    data: airHumidityData,
+    options: {
+        plugins: {
+            title: {
+                display: true,
+                text: 'Air Humidity',  // Title text
+                font: {
+                    size: 32,  // Adjust the font size
+                    weight: 'bold',
+                    color: 'rgb(51, 90, 58)'
+                },
+                padding: {
+                    top: 20,
+                    bottom: 20
+                }
+            }
+        },
+        label: {
+            display: false  // Hide the legend
+        },
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: 'Time',  // X-axis title
+                    font: {
+                        size: 16,
+                        color: 'rgb(51, 90, 58)'
+                    }
+                }
+            },
+            y: {
+                min: 0,
+                max: 100,
+                title: {
+                    display: true,
+                    text: 'Humidity (%)',  // Y-axis title
+                    font: {
+                        size: 16,
+                        color: 'rgb(51, 90, 58)'
+                    }
+                }
+            }
+        }
+    }
+});
+
+           const airTemperatureChart = new Chart(document.getElementById('air-temperature-graph'), {
+    type: 'line',
+    data: airTemperatureData,
+    options: {
+        plugins: {
+            title: {
+                display: true,
+                text: 'Average Air Temperature',  // Title text
+                font: {
+                    size: 32,  // Adjust the font size
+                    weight: 'bold',
+                    color: 'rgb(51, 90, 58)'
+                },
+                padding: {
+                    top: 20,
+                    bottom: 20
+                }
+            }
+        },
+        label: {
+            display: false  // Hide the legend
+        },
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: 'Time',  // X-axis title
+                    font: {
+                        size: 16,
+                        color: 'rgb(51, 90, 58)'
+                    }
+                }
+            },
+            y: {
+                min: 5,
+                max: 35,
+                title: {
+                    display: true,
+                    text: 'Average Temperature [\u00B0C]',  // Y-axis title with degree symbol
+                    font: {
+                        size: 16,
+                        color: 'rgb(51, 90, 58)'
+                    }
+                }
+            }
+        }
+    }
+});
+            // Hide all charts initially
+            document.getElementById('soil-moisture-graph').style.display = 'none';
+            document.getElementById('soil-temperature-graph').style.display = 'none';
+            document.getElementById('air-humidity-graph').style.display = 'none';
+            document.getElementById('air-temperature-graph').style.display = 'none';
+
+            // Button click event listeners to show relevant graph
+           document.getElementById('show-soil-moisture').addEventListener('click', function () {
+    showGraph('soil-moisture-graph');
+    document.getElementById('graphs-modal').style.display = 'block'; // Show the modal
+});
+
+document.getElementById('show-soil-temperature').addEventListener('click', function () {
+    showGraph('soil-temperature-graph');
+    document.getElementById('graphs-modal').style.display = 'block'; // Show the modal
+});
+
+document.getElementById('show-air-humidity').addEventListener('click', function () {
+    showGraph('air-humidity-graph');
+    document.getElementById('graphs-modal').style.display = 'block'; // Show the modal
+});
+
+document.getElementById('show-air-temperature').addEventListener('click', function () {
+    showGraph('air-temperature-graph');
+    document.getElementById('graphs-modal').style.display = 'block'; // Show the modal
+});
+            // Function to display the selected graph and hide others
+            function showGraph(graphId) {
+                // Hide all graphs
+                const allGraphs = ['soil-moisture-graph', 'soil-temperature-graph', 'air-humidity-graph', 'air-temperature-graph'];
+                allGraphs.forEach(id => {
+                    document.getElementById(id).style.display = 'none';
+                });
+
+                // Show the selected graph
+                document.getElementById(graphId).style.display = 'block';
+            }
+        })
+        .catch(error => console.error('Error fetching graph data:', error));
+
+    // Close the modal
+    document.getElementById('close-graphs').addEventListener('click', function () {
+        document.getElementById('graphs-modal').style.display = 'none';
+    });
+</script>    
+</body>
+
+</html>
