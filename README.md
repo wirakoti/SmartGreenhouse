@@ -12,3 +12,5 @@ Components
 - Sensors: Air temperature (AHT20), air humidity (AHT20), soil moisture (V2.0), soil temperature (DS18B20).
 - Actuators: Ceramic heating element, water pump, PC fans, USB air humidifier.
 - Microcontrollers: Arduino UNO (for sensors) and Raspberry Pi 3B+ (for web interface and control logic).
+
+Check out usage-example folder to see how it works.
